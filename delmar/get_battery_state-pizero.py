@@ -24,7 +24,7 @@ def battery_percentage_handler(battery_percentage):
 def battery_voltage_handler(battery_voltage_state):
     global voltage_state
     voltage_state = battery_voltage_state
- #   print('Voltage state: ', battery_voltage_state)
+    print('Voltage state: ', battery_voltage_state)
     global state_info
     state_info = '[{}, {}, {}, {}]'.format(
         '{}: {}'.format(VoltageStates.unknown.name, VoltageStates.unknown.value),
