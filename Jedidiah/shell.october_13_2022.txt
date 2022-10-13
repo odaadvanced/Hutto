@@ -1,0 +1,114 @@
+Python 3.7.3 (/usr/bin/python3)
+>>> %cd /home/pi/sphero-sdk-raspberrypi-python/getting_started/observer/power
+>>> %Run get_battery_state.py
+Checking RVR firmware versions...
+>>> %Run get_battery_state.py
+Checking RVR firmware versions...
+>>> %Run get_battery_state.py
+Checking RVR firmware versions...
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Python 3.7.3 (/usr/bin/python3)
+>>> %Run get_battery_state.py
+Checking RVR firmware versions...
+Battery percentage:  {'percentage': 100}
+Voltage state:  {'state': 1}
+Voltage states:  [unknown: 0, ok: 1, low: 2, critical: 3]
+>>> %Run get_battery_state.py
+Checking RVR firmware versions...
+Checking CMS firmware versions...
+Firmware check done.
+Battery percentage:  {'percentage': 100}
+Voltage state:  {'state': 1}
+Voltage states:  [unknown: 0, ok: 1, low: 2, critical: 3]
+>>> %cd /home/pi/sphero-sdk-raspberrypi-python/getting_started/observer/leds
+>>> %Run set_all_leds.py
+>>> %cd /home/pi/dev/hutto/Jedidiah
+>>> %Run set_all_leds.py
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Python 3.7.3 (/usr/bin/python3)
+>>> %Run set_all_leds.py
+>>> %Run set_all_leds.py
+>>> %Run set_all_leds.py
+>>> %Run set_all_leds.py
+>>> %Run set_all_leds.py
+>>> %Run set_all_leds.py
+>>> 
+>>> 
+>>> 
+>>> 
+>>> 
+
+>>> 
+>>> 
+
+>>> 
+
+>>> 
+
+>>> 
+>>> 
+>>> 
+>>> %Run set_all_leds.py
+>>> 'jedidiah'.upper()
+'JEDIDIAH'
+>>> jedidiah.upper()
+Traceback (most recent call last):
+  File "<pyshell>", line 1, in <module>
+NameError: name 'jedidiah' is not defined
+>>> 'jedidiah'.upper()
+'JEDIDIAH'
+>>> 'JEDIDIAH'.lower()
+'jedidiah'
+>>> 'jedidiah'.lower()
+'jedidiah'
+>>> 'jedidiah'.__class__
+<class 'str'>
+>>> 8.__class__
+  File "<pyshell>", line 1
+    8.__class__
+              ^
+SyntaxError: invalid syntax
+>>> 8.__class__
+  File "<pyshell>", line 1
+    8.__class__
+              ^
+SyntaxError: invalid syntax
+>>> [8.]__class__
+  File "<pyshell>", line 1
+    [8.]__class__
+                ^
+SyntaxError: invalid syntax
+>>> [8].__class__
+<class 'list'>
+>>> 12.34.__class__
+<class 'float'>
+>>> 1.__class__
+  File "<pyshell>", line 1
+    1.__class__
+              ^
+SyntaxError: invalid syntax
+>>> (1).__class__
+<class 'int'>
+>>> %cd /home/pi/Public/prog_pi_ed3
+>>> %Run 05_01_converter.py
+Convert inches to mm
+converting 2 inches
+50mm
+>>> c2 = ScaleConverter('feet', 'yards', 0.333)
+>>> print(str(c2.convert(3)) + c2.units_to)
+0.9990000000000001yards
+>>> c2 = ScaleConverter('feet', 'yards', 1/3)
+>>> print(str(c2.convert(3)) + c2.units_to)
+1.0yards
+>>> 
+>>> c2 = ScaleConverter('feet', 'yards', 0.333...)
+  File "<pyshell>", line 1
+    c2 = ScaleConverter('feet', 'yards', 0.333...)
+                                                ^
+SyntaxError: invalid syntax
+>>> c2 = ScaleConverter('feet', 'yards', 1/3)
+>>> print(str(c2.convert(3)) + c2.units_to)
+1.0yards
+>>> 
