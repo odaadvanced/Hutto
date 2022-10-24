@@ -1,5 +1,5 @@
 from guizero import App, Text
 
-app = App()
-Text(app, text="Hello World")
-app.display()
+app = App(bg='light blue')
+Text(app, text="Katherine")
+#app.display()
