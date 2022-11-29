@@ -14,8 +14,8 @@ def key_pressed():
     # if button is pressed is_pressed will report false for that input
     if left_switch.is_pressed and right_switch.is_pressed:
         return -1
-    #if not left_switch.is_pressed and not right_switch.is_pressed:
-        #return 0
+    if not left_switch.is_pressed and not right_switch.is_pressed:
+        return 0
     if not right_switch.is_pressed and left_switch.is_pressed:
         return 1
     if right_switch.is_pressed and not left_switch.is_pressed:
