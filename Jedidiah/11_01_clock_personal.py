@@ -1,12 +1,11 @@
 # 11_01_clock.py
 
-import board, time
-from adafruit_ht16k33.segments import Seg7x4
+import time
 from datetime import datetime
+from oled_io import Oled_io
 
-i2c = board.I2C()
-display = Seg7x4(i2c)
-display.brightness = 0.3
+display = Oled_io()
+
 show_colon = True
 
 while True:

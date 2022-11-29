@@ -1,13 +1,12 @@
 # 11_02_fancy_clock.py
 
-import board, time, gpiozero
-from adafruit_ht16k33.segments import Seg7x4
+import time, gpiozero
 from datetime import datetime
+from oled_io import Oled_io
+
+display = Oled_io()
 
 switch = gpiozero.Button(23, pull_up=True)
-i2c = board.I2C()
-display = Seg7x4(i2c)
-display.brightness = 0.3
 show_colon = True
 time_mode, seconds_mode, date_mode = range(3)
 disp_mode = time_mode
