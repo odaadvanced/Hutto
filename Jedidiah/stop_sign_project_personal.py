@@ -7,12 +7,10 @@ red_led = LED(18)
 green_led = LED(23)
 yellow_led = LED(24)
 switch = Button(25)
-
 pin1 = DigitalOutputDevice(16)
 pin2 = DigitalOutputDevice(20)
 p = PiAnalog()
 display = Oled_io()
-check_button_pressed = 0
 
 def button_pressed():
    if switch.is_pressed:
@@ -56,6 +54,5 @@ while True:
         display.print("DO NOT CROSS")
         time.sleep(1)
         for l in range(0,4):
-            display.print(str(3-l))
             time.sleep(1)       
         yellow_led.off()  
