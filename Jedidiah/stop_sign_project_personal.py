@@ -7,16 +7,14 @@ red_led = LED(18)
 green_led = LED(23)
 yellow_led = LED(24)
 switch = Button(25)
-
-p1 = DigitalOutputDevice(16)
-p2 = DigitalOutputDevice(20)
+pin1 = DigitalOutputDevice(16)
+pin2 = DigitalOutputDevice(20)
 p = PiAnalog()
 display = Oled_io()
-check_button_pressed = 0
 
 def button_pressed():
-   switch.is_pressed
-   check_button_pressed = global check_button_pressed + 1
+   if switch.is_pressed:
+    return 1
 
 def buzz(pitch, duration):
     period = 1.0 / pitch
@@ -30,31 +28,31 @@ def buzz(pitch, duration):
         pin2.on()
         delay(p2)
 
-def display_time_remaining_and_buzz():
-    for i in range(0,16):
-        display.print(15-i)
-        buzz(1000, 0.5)
-        break
-
+def delay(p):
+    t0 = time.time()
+    while time.time() < t0 + p:
+        pass
+    
 while True:
-    while not button_pressed:
-       red_led.on()
-       display.print("DO NOT CROSS")
-    if global check_button_pressed = 1:
-        display.print(display_time_remaining_and_buzz)
+    if button_pressed() !=1:
+        red_led.on()
+        display.print("DO NOT CROSS")
+    if button_pressed() == 1:
+        for j in range(0,16):
+            display.print(str(15-j))
+            buzz(2000, 0.5)
+            time.sleep(0.5)
         red_led.off()
         green_led.on()
         display.print("MAY CROSS")
+        time.sleep(1)
         for k in range(0,16):
-            display.print(15-k)
+            display.print(str(15-k))
+            time.sleep(1)
         green_led.off()
         yellow_led.on()
-        for l in range(0,4):
-            display.print(4-k)
         display.print("DO NOT CROSS")
-        yellow_led.off()
-        red_led.on()
-        check_button_pressed = 0
-        
-    
-    
+        time.sleep(1)
+        for l in range(0,4):
+            time.sleep(1)       
+        yellow_led.off()  

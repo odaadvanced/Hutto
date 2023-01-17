@@ -1,0 +1,10 @@
+prompt = "Enter some text."
+user_input = input(prompt)
+first_change = user_input.replace("a", "4")
+second_change = first_change.replace("b", "8")
+third_change = second_change.replace("e", "3")
+fourth_change = third_change.replace("l", "1")
+fifth_change = fourth_change.replace("o", "0")
+sixth_change = fifth_change.replace("s", "5")
+seventh_change = sixth_change.replace("t", "7")
+print(seventh_change)

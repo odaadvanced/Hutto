@@ -1,0 +1,8 @@
+animals_2 = "Animals".upper()
+badger_2 = "Badger".upper()
+honey_bee_2 = "Honey Bee".upper()
+honeybadger_2 = "Honeybadger".upper()
+print(animals_2)
+print(badger_2)
+print(honey_bee_2)
+print(honeybadger_2)
