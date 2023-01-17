@@ -12,9 +12,11 @@ pin2 = DigitalOutputDevice(20)
 p = PiAnalog()
 display = Oled_io()
 
+
 def button_pressed():
    if switch.is_pressed:
     return 1
+
 
 def buzz(pitch, duration):
     period = 1.0 / pitch
@@ -27,6 +29,7 @@ def buzz(pitch, duration):
         pin1.off()
         pin2.on()
         delay(p2)
+
 
 def delay(p):
     t0 = time.time()
@@ -42,6 +45,7 @@ while True:
             display.print(str(15-j))
             buzz(2000, 0.5)
             time.sleep(0.5)
+
         red_led.off()
         green_led.on()
         display.print("MAY CROSS")
@@ -52,7 +56,10 @@ while True:
         green_led.off()
         yellow_led.on()
         display.print("DO NOT CROSS")
+
         time.sleep(1)
         for l in range(0,4):
             time.sleep(1)       
         yellow_led.off()  
+
+      
