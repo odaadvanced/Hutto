@@ -24,7 +24,7 @@ class Oled_io:
 
 
     # Load default font.
-        self.font = ImageFont.truetype("FreeMonoBold.ttf", 25)
+        self.font = ImageFont.truetype("FreeMonoBold.ttf", 12)
      
     def clear (self):
         self.oled.fill(0)
