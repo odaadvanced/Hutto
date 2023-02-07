@@ -5,9 +5,7 @@ def outer_func():
     
     def inner_func():
         z = x + y
-        return(z)
+        return z
     
-    return(inner_func)
-
-
+    return inner_func()
 

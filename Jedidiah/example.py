@@ -1,0 +1,1 @@
+num_letters = len("four")
