@@ -8,3 +8,5 @@ def outer_func():
         return z
     
     return inner_func()
+
+print(outer_func())

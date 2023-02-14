@@ -10,8 +10,8 @@ def convert_cel_to_far(C):
 
 prompt_1 = "Enter a temperature in degrees F: "
 user_input_1 = float(input(prompt_1))
-print(f"{user_input_1} degrees F = {convert_far_to_cel(user_input_1):.2f}")
+print(f"{user_input_1} degrees F = {convert_far_to_cel(user_input_1):.2f} degrees C")
 
 prompt_2 = "Enter a temperature in degrees C: "
 user_input_2 = float(input(prompt_2))
-print(f"{user_input_2} degrees C = {convert_cel_to_far(user_input_2):.2f}")
+print(f"{user_input_2} degrees C = {convert_cel_to_far(user_input_2):.2f} degrees F")
