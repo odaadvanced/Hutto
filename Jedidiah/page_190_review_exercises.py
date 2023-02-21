@@ -1,0 +1,11 @@
+print(1 <= 1)
+print(1 != 1)
+print(1 != 2)
+print("good" != "bad")
+print("good" != "Good")
+print(123 == "123")
+
+print(3 < 4)
+print(10 > 5)
+print("jack" != "jill")
+print(42 != "42")
