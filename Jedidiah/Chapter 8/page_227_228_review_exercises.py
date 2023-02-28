@@ -9,7 +9,6 @@ def wins_region(percent):
 
 for election in range(10000):
     if wins_region(87) + wins_region(65) + wins_region(17) >= 2:
-        number_won = number_won + 1
+        number_won += 1
 
-print(f"Candidate A wins {number_won} times.")
-    
+print(f"Candidate A wins {number_won / 100}% of the time.")
