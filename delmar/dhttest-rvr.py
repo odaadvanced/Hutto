@@ -13,6 +13,7 @@ import time
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.cleanup()
+
 count = 0
 
 
@@ -25,42 +26,35 @@ time.sleep(2)
 
 rvr.reset_yaw()
 
-
-# read data using gpio 4
-
+# read data using pin 14
 def update_temp():
     global count
- #   while True: 
     instance = dht11.DHT11(pin = 4)
-    temperature = instance.read()
-    temperature = temperature.temperature;
-
-
-    temperature = "%.2f" % temperature # Round the temperature to 2 d.p.
-    temp_text.value = temperature
-    count = count + 1
-    print (f'temperature = {temperature} count = {count}')
-    
     result = instance.read()
-
-    if result.is_valid():
-        temp_text.value = result.temperature
-
-        if result.temperature <= 17.8 :
-            rvr.drive_with_heading(
-                speed=10,  # Valid speed values are 0-255
-                heading=0,  # Valid heading values are 0-359
-                flags=DriveFlagsBitmask.none.value
-            )
-        else :
-           rvr.drive_with_heading(
-                speed=10,  # Valid speed values are 0-255
-                heading=0,  # Valid heading values are 0-359
-                flags=DriveFlagsBitmask.drive_reverse.value
-            )
-      
-    temp_text.after(1000, update_temp)
     
+    if result.is_valid():
+        temperature = result.temperature;
+        temperature = "%.2f" % temperature # Round the temperature to 2 d.p.
+        temp_text.value = temperature
+        count = count + 1
+        print (f'temperature = {temperature} count = {count}')
+        print("Temperature: %-3.1f C" % result.temperature)
+        print("Humidity: %-3.1f %%" % result.humidity)
+        
+    if result.temperature <= 17.8 :
+        rvr.drive_with_heading(
+            speed=10,  # Valid speed values are 0-255
+            heading=0,  # Valid heading values are 0-359
+            flags=DriveFlagsBitmask.none.value
+        )
+    else :
+        rvr.drive_with_heading(
+            speed=10,  # Valid speed values are 0-255
+            heading=0,  # Valid heading values are 0-359
+            flags=DriveFlagsBitmask.drive_reverse.value
+        )
+      
+    temp_text.after(1000, update_temp)    
 
 app = App(title = "Thermometer", width="400", height="300")
 Text(app, text="Temp F", size=32)
