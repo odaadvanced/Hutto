@@ -1,7 +1,7 @@
-from random import randint
+import random
 
 def roll():
-    for x in range (0,7):
-        print(roll.randint())
+    x = random.randint(1,6)
+    print(x)
 
 roll()
