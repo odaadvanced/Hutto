@@ -4,12 +4,12 @@ captains['Voyager'] = 'Janeway'
 captains['Defiant'] = 'Sisko'
 
 if 'Enterprise' in captains:
-    print(captains['Enterprise'])
+    pass
 else:
     captains['Enterprise'] = 'unknown'
 
 if 'Discovery' in captains:
-    print(captains['Discovery'])
+    pass
 else:
     captains['Discovery'] = 'unkown'
 
