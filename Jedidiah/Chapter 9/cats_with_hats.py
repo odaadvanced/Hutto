@@ -15,4 +15,4 @@ for l in range(0,100):
     if list_dict[l] == True:
         list_set.append(l+1)
         
-print(list_set)    
+print(list_set)

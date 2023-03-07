@@ -20,8 +20,8 @@ def enrollment_stats(university):
 total_students = enrollment_stats(universities)[0]
 total_tuition = enrollment_stats(universities)[1]
 print(f"{'*' * 30}")
-print(f"Total students: {sum(total_students):,}")
-print(f"Total tuition: ${sum(total_tuition):,}\n")
+print(f"Total students:   {sum(total_students):,}")
+print(f"Total tuition:  $ {sum(total_tuition):,}\n")
 
 def mean(set):
     average_number = sum(set) / len(set)
@@ -42,9 +42,9 @@ def median(set):
     return median_number
 
 
-print(f"Student mean: {mean(total_students):,.2f}")
-print(f"Student median: {int(median(total_students)):,}\n")
+print(f"Student mean:     {mean(total_students):,.2f}")
+print(f"Student median:   {int(median(total_students)):,}\n")
 
-print(f"Tuition mean: ${mean(total_tuition):,.2f}")
-print(f"Tuition median: ${int(median(total_tuition)):,}")
+print(f"Tuition mean:   $ {mean(total_tuition):,.2f}")
+print(f"Tuition median: $ {int(median(total_tuition)):,}")
 print(f"{'*' * 30}")
