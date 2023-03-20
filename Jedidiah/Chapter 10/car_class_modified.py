@@ -11,10 +11,10 @@ class Car:
     
 blue = Car("Blue", 20000)
 red = Car("Red", 30000)
-new_car = Car("Gray", 0)
+gray = Car("Gray", 0)
 
 print(blue)
 print(red)
 
-new_car.drive(100)
-print(new_car.mileage)
+gray.drive(100)
+print(gray.mileage)
