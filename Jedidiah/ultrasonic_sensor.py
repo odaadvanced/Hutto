@@ -8,6 +8,8 @@ import asyncio
 from sphero_sdk import SpheroRvrAsync
 from sphero_sdk import SerialAsyncDal
 import time
+from PiAnalog import *
+from gpiozero import DigitalOutputDevice
 
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
@@ -21,11 +23,30 @@ right_trigger = 20
 right_echo = 21
 left_trigger = 23
 left_echo = 24
+pin1 = DigitalOutputDevice(17)
+pin2 = DigitalOutputDevice(27)
 
 GPIO.setup(left_trigger, GPIO.OUT)
 GPIO.setup(left_echo, GPIO.IN)
 GPIO.setup(right_trigger, GPIO.OUT)
 GPIO.setup(right_echo, GPIO.IN)
+
+def buzz(pitch, duration):
+    period = 1.0 / pitch
+    p2 = period / 2
+    cycles = int(duration * pitch)
+    for i in range(0, cycles):
+        pin1.on()
+        pin2.off()
+        delay(p2)
+        pin1.off()
+        pin2.on()
+        delay(p2)
+
+def delay(p):
+    t0 = time.time()
+    while time.time() < t0 + p:
+        pass
 
 def distance_left():
     GPIO.output(left_trigger, True)
@@ -70,3 +91,40 @@ def distance_right():
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
+    await asyncio.sleep(.5)
+    while True:
+        dist_r = distance_right()
+        dist_l = distance_left()
+        await asyncio.sleep(.05)
+        print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
+        if dist_r < 50:
+            buzz(2000, 0.5)
+            if dist_r < 35:
+                while dist_r < 35:
+                    await rvr.raw_motors(2, 255, 1, 255)
+                    dist_r = distance_right()
+                    await asyncio.sleep(.05)
+                    print('turning right')
+                await rvr.reset_yaw()
+        elif dist_l < 50:
+            buzz(2000, 0.5)
+            if dist_l < 35:
+                while dist_l < 35:
+                    await rvr.raw_motors(1, 255, 2, 255)
+                    dist_l = distance_left()
+                    await asyncio.sleep(.05)
+                    print('turning left')
+                await rvr.reset_yaw()
+            elif dist_l >= 35 and dist_r >= 35:
+                await rvr.drive_with_heading(40, 0, 0)
+
+try:
+    loop.run_until_complete(
+        asyncio.gather(
+            main()
+        )
+    )
+
+except KeyboardInterrupt:
+    print("Program ended by KeyboardInterrupt")
+    GPIO.cleanup()
