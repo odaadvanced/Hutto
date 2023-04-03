@@ -6,8 +6,8 @@ class Car:
     def __str__(self):
         return (f"The {self.color} car has {self.mileage:,} miles.")
     
-blue = Car("Blue", 20000)
-red = Car("Red", 30000)
+blue = Car("blue", 20000)
+red = Car("red", 30000)
 
 print(blue)
 print(red)
