@@ -2,26 +2,28 @@ class Budget:
     def __init__(self, amount):
         self.amount = amount
         
-    def spend(money):
+    def spend(self, money):
         self.amount = self.amount - money
         return self.amount
     
-    def deposit(money):
+    def deposit(self, money):
         self.amount += money
         return self.amount
     
-    def compute(item):
-        pass
+    def compute(self, item):
+        return self.amount
     
-    def transfer(category1, category2, amount):
+    def transfer(self, category, amount):
        '''Transfers a certain amount from category 1 to category 2.'''
-       category1 = category1 - amount
-       category2 = category2 + amount
+       self.amount = self.amount - amount
+       category += amount
        
-    def budget_calculations(item, money, total):
+    def budget_calculations(self, money, total):
         percent = (money/total) * 100
         print(f'You are spending {percent} % of your budget on {item}.')
 
-class Food(Budget):
-    pass
+food = Budget(3500)
+clothing = Budget(1000)
+entertainment = Budget(500)
+
     
