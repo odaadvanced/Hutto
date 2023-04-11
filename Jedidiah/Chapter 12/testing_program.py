@@ -1,24 +1,31 @@
+spent_for_food = 0
+spent_for_clothing = 0
+spent_for_entertainment = 0
+
 class Budget:
     def __init__(self, food, clothing, entertainment):
         self.food = food
         self.clothing = clothing
-        self.entertainment = entertainment
-    
-    original_food = food
-    original_clothing = clothing
-    original_entertainment = entertainment
-            
+        self.entertainment = entertainment        
+        
     def __str__(self):
         return(f'''Amount for food: ${self.food}
 Amount for clothing: ${self.clothing}
 Amount for entertainment: ${self.entertainment}''')
         
     def spend(self, category1, category2, category3):
+        global spent_for_food
+        global spent_for_clothing
+        global spent_for_entertainment
         self.food = self.food - category1
         self.clothing = self.clothing - category2
         self.entertainment = self.entertainment - category3
+        spent_for_food += category1
+        spent_for_clothing += category2
+        spent_for_entertainment += category3
         print(f'''You spent ${category1} on food, ${category2} on clothing,
 and ${category3} on entertainment.''')
+        return (spent_for_food, spent_for_clothing, spent_for_entertainment)
  
     def deposit(self, category1, category2, category3):
         self.food += category1
@@ -56,10 +63,10 @@ clothing, and ${category3} for entertainment.''')
             else:
                 self.clothing += amount
                 
-    def budget_calculations(self, category):
-        food_spent = original_food - self.food
-        clothing_spent = original_clothing - self.clothing
-        entertainment_spent = original_entertainment - self.entertainment
+    def budget_calculations(self, category):        
+        food_spent = spend[0]
+        clothing_spent = spend[1]
+        entertainment_spent = spend[2]
         total_spent = food_spent + clothing_spent + entertainment_spent
         if category == 1:
             money = food_spent
