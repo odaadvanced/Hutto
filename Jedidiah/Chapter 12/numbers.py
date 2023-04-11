@@ -43,11 +43,9 @@ file.close()
 
 # Exercises for number 4
 
-favorite_color_list = []
-file_path = Path.home() / "favorite_colors.csv"
-file = file_path.open(mode='r', encoding='utf-8')
-reader = csv.DictReader(file)
-for row in reader:
-    favorite_color_list.append(row)
-print(favorite_color_list)
-file.close()
+favorite_colors = []
+with file_path.open(mode='r', encoding='utf-8') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        favorite_colors.append(row)
+print(favorite_colors)
