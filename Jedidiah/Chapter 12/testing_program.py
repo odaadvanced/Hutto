@@ -10,7 +10,7 @@ Amount for clothing: ${self.clothing}
 Amount for entertainment: ${self.entertainment}''')
         
     def spend(self, category, amount):
-        if category == "food":
+        if category == "food" and self.food >= amount:
             self.food = self.food - amount
         elif category == "clothing":
             self.clothing = self.clothing - amount
