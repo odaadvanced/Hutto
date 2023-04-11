@@ -3,3 +3,9 @@ class budget:
         self.food = food
         self.clothing = clothing
         self.entertainment = entertainment
+        
+    def spend (total, cost):
+        self.spend = self.total - self.cost
+        print(spend)
+    
+    
