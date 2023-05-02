@@ -93,17 +93,6 @@ def distance_right():
     distance = (time_elapsed * 34300) / 2
     return distance
 
-def rvr_set_color(num1, num2, num3):
-    rvr2.set_all_leds(
-        led_group=RvrLedGroups.all_lights.value,
-        led_brightness_values=[color for _ in range(10) for color in [num1, num2, num3]]
-    )
-    
-def rvr_reset_color():
-    rvr2.set_all_leds(
-        led_group=RvrLedGroups.all_lights.value,
-        led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
-    )
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
@@ -113,40 +102,23 @@ async def main():
         dist_l = distance_left()
         await asyncio.sleep(.05)
         print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
-        if dist_r < 80:
-            rvr_set_color(255, 0, 0)
-            buzz(2000, 0.5)
-            if dist_r < 70:
-                rvr_set_color(255, 140, 0)
-            if dist_r < 60:
-                rvr_set_color(255, 255, 0)
-            if dist_r < 50:
-                rvr_set_color(0, 255, 0)
-                while dist_r < 50:
-                    await rvr.raw_motors(2, 255, 1, 255)
-                    dist_r = distance_right()
-                    await asyncio.sleep(.05)
-                    print('turning right')
-                await rvr.reset_yaw()
-        elif dist_l < 80:
-            rvr_set_color(128, 0, 128)
-            buzz(2000, 0.5)
-            if dist_r < 70:
-                rvr_set_color(75, 0, 130)
-            if dist_r < 60:
-                rvr_set_color(0, 0, 255)
-            if dist_l < 50:
-                rvr_set_color(173, 255, 47)            
-                while dist_l < 50:
-                    await rvr.raw_motors(1, 255, 2, 255)
-                    dist_l = distance_left()
-                    await asyncio.sleep(.05)
-                    print('turning left')
-                await rvr.reset_yaw()
-        elif dist_l >= 80 and dist_r >= 80:
-            rvr_reset_color()
-            await rvr.drive_with_heading(40, 0, 0)
-
+        if dist_r < 35:
+            while dist_r < 35:
+                await rvr.raw_motors(2, 255, 1, 255)
+                dist_r = distance_right()
+                await asyncio.sleep(.05)
+                print('turning right')
+            await rvr.reset_yaw()
+        elif dist_l < 35:
+            while dist_l < 35:
+                await rvr.raw_motors(1, 255, 2, 255)
+                dist_l = distance_left()
+                await asyncio.sleep(.05)
+                print('turning left')
+            await rvr.reset_yaw()
+        elif dist_l >= 35 and dist_r >= 35:
+            await rvr.drive_with_heading(90,0,0)
+            
 try:
     loop.run_until_complete(
         asyncio.gather(
