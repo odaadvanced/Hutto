@@ -10,67 +10,67 @@ from sphero_sdk import DriveFlagsBitmask
 rvr = SpheroRvrObserver()
 
 
-def main():
+while True:
     """ This program has RVR drive around in different directions using the function drive_with_heading.
     """
 
-    try:
-        rvr.wake()
+    #try:
+    rvr.wake()
 
-        # Give RVR time to wake up
-        time.sleep(2)
+    # Give RVR time to wake up
+    time.sleep(2)
 
-        rvr.reset_yaw()
+    rvr.reset_yaw()
 
-        rvr.drive_with_heading(
-            speed=100,  # Valid speed values are 0-255
-            heading=0,  # Valid heading values are 0-359
-            flags=DriveFlagsBitmask.none.value
-        )
+    rvr.drive_with_heading(
+        speed=100,  # Valid speed values are 0-255
+        heading=0,  # Valid heading values are 0-359
+        flags=DriveFlagsBitmask.none.value
+    )
 
-        # Delay to allow RVR to drive
-        time.sleep(1)
+    # Delay to allow RVR to drive
+    time.sleep(1)
 
-        rvr.drive_with_heading(
-            speed=100,  # Valid speed values are 0-255
-            heading=90,  # Valid heading values are 0-359
-            flags=DriveFlagsBitmask.none.value
-        )
+    rvr.drive_with_heading(
+        speed=100,  # Valid speed values are 0-255
+        heading=90,  # Valid heading values are 0-359
+        flags=DriveFlagsBitmask.none.value
+    )
 
-        # Delay to allow RVR to drive
-        time.sleep(1)
-        
-        rvr.drive_with_heading(
-            speed=100,  # Valid speed values are 0-255
-            heading=180,  # Valid heading values are 0-359
-            flags=DriveFlagsBitmask.none.value
-        )
+    # Delay to allow RVR to drive
+    time.sleep(1)
+    
+    rvr.drive_with_heading(
+        speed=100,  # Valid speed values are 0-255
+        heading=180,  # Valid heading values are 0-359
+        flags=DriveFlagsBitmask.none.value
+    )
 
-        # Delay to allow RVR to drive
-        time.sleep(1)
+    # Delay to allow RVR to drive
+    time.sleep(1)
 
-        rvr.drive_with_heading(
-            speed=100,  # Valid speed values are 0-255
-            heading=270,  # Valid heading values are 0-359
-            flags=DriveFlagsBitmask.none.value
-        )
+    rvr.drive_with_heading(
+        speed=100,  # Valid speed values are 0-255
+        heading=270,  # Valid heading values are 0-359
+        flags=DriveFlagsBitmask.none.value
+    )
 
-        # Delay to allow RVR to drive
-        time.sleep(1)
-        
-        rvr.drive_with_heading(
-            speed=0,
-            heading=0,
-            flags=DriveFlagsBitmask.none.value
-        )
-                        
-    except KeyboardInterrupt:
-        print('\nProgram terminated with keyboard interrupt.')
+    # Delay to allow RVR to drive
+    time.sleep(1)
+    
+    rvr.drive_with_heading(
+        speed=0,
+        heading=0,
+        flags=DriveFlagsBitmask.none.value
+    )
+                    
+    #except KeyboardInterrupt:
+     #   print('\nProgram terminated with keyboard interrupt.')
 
-    finally:
-        rvr.close()
+   # finally:
+    #    rvr.close()
 
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+ #   main()
 
