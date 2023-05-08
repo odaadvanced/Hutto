@@ -18,16 +18,17 @@ def display_speed():
     speed = random.randint(0,30)    
     return speed
 
-rvr.wake()
-time.sleep(2)
-rvr.reset_yaw()
-    
+   
 while True:
     try:        
+        rvr.wake()
         time.sleep(2)
-        display.print(str(display_speed()))
+        rvr.reset_yaw()
+        time.sleep(2)
+        new_speed = display_speed()
+        display.print(str(new_speed))
         rvr.drive_with_heading(
-            speed=display_speed(),  # Valid speed values are 0-255
+            speed=new_speed,  # Valid speed values are 0-255
             heading=90,  # Valid heading values are 0-359
             flags=DriveFlagsBitmask.none.value
         )
