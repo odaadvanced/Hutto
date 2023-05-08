@@ -20,7 +20,7 @@ rvr = SpheroRvrAsync(
         loop
     )
 )
-rvr2 = SpheroRvrObserver()
+
 GPIO.setmode(GPIO.BCM)
 
 right_trigger = 20
@@ -36,22 +36,6 @@ GPIO.setup(left_echo, GPIO.IN)
 GPIO.setup(right_trigger, GPIO.OUT)
 GPIO.setup(right_echo, GPIO.IN)
 
-def buzz(pitch, duration):
-    period = 1.0 / pitch
-    p2 = period / 2
-    cycles = int(duration * pitch)
-    for i in range(0, cycles):
-        pin1.on()
-        pin2.off()
-        delay(p2)
-        pin1.off()
-        pin2.on()
-        delay(p2)
-
-def delay(p):
-    t0 = time.time()
-    while time.time() < t0 + p:
-        pass
 
 def distance_left():
     GPIO.output(left_trigger, True)
