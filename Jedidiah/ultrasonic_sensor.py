@@ -7,12 +7,11 @@ import asyncio
 
 from sphero_sdk import SpheroRvrAsync
 from sphero_sdk import SerialAsyncDal
-from sphero_sdk import SpheroRvrObserver
-from sphero_sdk import Colors
-from sphero_sdk import RvrLedGroups
+#from sphero_sdk import Colors
+#from sphero_sdk import RvrLedGroups
 import time
-from PiAnalog import *
-from gpiozero import DigitalOutputDevice
+#from PiAnalog import *
+#from gpiozero import DigitalOutputDevice
 
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
@@ -27,10 +26,6 @@ right_trigger = 20
 right_echo = 21
 left_trigger = 23
 left_echo = 24
-pin1 = DigitalOutputDevice(17)
-pin2 = DigitalOutputDevice(27)
-p = PiAnalog()
-
 GPIO.setup(left_trigger, GPIO.OUT)
 GPIO.setup(left_echo, GPIO.IN)
 GPIO.setup(right_trigger, GPIO.OUT)
@@ -77,39 +72,39 @@ def distance_right():
     distance = (time_elapsed * 34300) / 2
     return distance
 
-async def main():
-    await rvr.wake()
-    await rvr.reset_yaw()
-    await asyncio.sleep(.5)    
-    while True:
-        dist_r = distance_right()
-        dist_l = distance_left()
-        await asyncio.sleep(.05)
-        print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
-        if dist_r < 35:
-            while dist_r < 35:
-                await rvr.raw_motors(2, 255, 1, 255)
-                dist_r = distance_right()
-                await asyncio.sleep(.05)
-                print('turning right')
-            await rvr.reset_yaw()
-        elif dist_l < 35:
-            while dist_l < 35:
-                await rvr.raw_motors(1, 255, 2, 255)
-                dist_l = distance_left()
-                await asyncio.sleep(.05)
-                print('turning left')
-            await rvr.reset_yaw()
-        elif dist_l >= 35 and dist_r >= 35:
-            await rvr.drive_with_heading(90,0,0)
-            
-try:
-    loop.run_until_complete(
-        asyncio.gather(
-            main()
-        )
-    )
-
-except KeyboardInterrupt:
-    print("Program ended by KeyboardInterrupt")
-    GPIO.cleanup()
+#async def main():
+ #   await rvr.wake()
+  #  await rvr.reset_yaw()
+   # await asyncio.sleep(.5)    
+    #while True:
+     #   dist_r = distance_right()
+      #  dist_l = distance_left()
+       # await asyncio.sleep(.05)
+        #print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
+#        if dist_r < 35:
+ #           while dist_r < 35:
+  #              await rvr.raw_motors(2, 255, 1, 255)
+   #             dist_r = distance_right()
+    #            await asyncio.sleep(.05)
+     #           print('turning right')
+      #      await rvr.reset_yaw()
+       # elif dist_l < 35:
+        #    while dist_l < 35:
+         #       await rvr.raw_motors(1, 255, 2, 255)
+          #      dist_l = distance_left()
+           #     await asyncio.sleep(.05)
+            #    print('turning left')
+#            await rvr.reset_yaw()
+ #       elif dist_l >= 35 and dist_r >= 35:
+  #          await rvr.drive_with_heading(,0,0)
+   #         
+#try:
+ #   loop.run_until_complete(
+  #      asyncio.gather(
+   #         main()
+    #    )
+#    )
+#
+#except KeyboardInterrupt:
+ #   print("Program ended by KeyboardInterrupt")
+  #  GPIO.cleanup()
