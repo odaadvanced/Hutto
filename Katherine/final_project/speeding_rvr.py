@@ -1,7 +1,7 @@
 from gpiozero import LED
-import time
-from signal import pause
-def speed():
+import random
+
+def speeding():
     speed = random.randint(0, 30)
     rvr.drive_with_heading(
         speed,
@@ -20,3 +20,4 @@ def speed():
         red_led2.blink(0.5, 0.5)
 
         pause()
+        
