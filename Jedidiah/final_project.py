@@ -11,6 +11,8 @@ import random
 from ultrasonic_sensor import distance_left, distance_right
 from PiAnalog import *
 from light_sensor import light_from_r
+from thermometer_plus import buzz
+from color_detection import *
 
 display = Oled_io()
 loop = asyncio.get_event_loop()
@@ -56,6 +58,7 @@ async def main():
         light_amount = detect_light()
         print(f"The light reading is {light_amount}.")
         if dist_r < 50:
+            buzz(2000, 0.5)
             while dist_r < 50:
                 await rvr.raw_motors(2, 255, 1, 255)
                 dist_r = distance_right()
@@ -63,6 +66,7 @@ async def main():
                 print('turning right')
                 await rvr.reset_yaw()
         elif dist_l < 50:
+            buzz(2000, 0.5)
             while dist_l < 50:
                 await rvr.raw_motors(1, 255, 2, 255)
                 dist_l = distance_left()
@@ -75,6 +79,7 @@ async def main():
             await asyncio.sleep(5)
         
 try:
+    
     loop.run_until_complete(
         asyncio.gather(
             main()
@@ -86,5 +91,6 @@ except KeyboardInterrupt:
     GPIO.cleanup()    
 
 finally:
-    rvr.close()
-    
+    rvr.sensor_control.clear()
+    time.sleep(.5)
+    rvr.close()    
