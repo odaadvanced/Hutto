@@ -24,7 +24,7 @@ GPIO.setmode(GPIO.BCM)
 
 right_trigger = 20
 right_echo = 21
-left_trigger = 23
+left_trigger = 27
 left_echo = 24
 GPIO.setup(left_trigger, GPIO.OUT)
 GPIO.setup(left_echo, GPIO.IN)
