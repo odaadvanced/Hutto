@@ -8,7 +8,7 @@ import time
 
 set_temp = 25
 
-pin1 = DigitalOutputDevice(4)
+pin1 = DigitalOutputDevice(13)
 pin2 = DigitalOutputDevice(25)
 p = PiAnalog()
 

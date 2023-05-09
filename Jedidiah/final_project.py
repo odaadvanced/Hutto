@@ -13,6 +13,8 @@ from PiAnalog import *
 from light_sensor import light_from_r
 from thermometer_plus import buzz
 from color_detection import *
+from dhttest import check_temp_and_humidity
+import tracemalloc
 
 display = Oled_io()
 loop = asyncio.get_event_loop()
@@ -44,7 +46,7 @@ def detect_light():
     light = light_from_r(p.read_resistance())
     reading_str = "{:.0f}".format(light)
     return reading_str
-    
+tracemalloc.start()    
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
@@ -57,6 +59,7 @@ async def main():
         print('Measurements are {0:.2f} cm right and {1:.2f} cm left'.format(dist_r, dist_l))
         light_amount = detect_light()
         print(f"The light reading is {light_amount}.")
+        check_temp_and_humidity()
         if dist_r < 50:
             buzz(2000, 0.5)
             while dist_r < 50:
@@ -76,8 +79,13 @@ async def main():
         elif dist_l >= 50 and dist_r >= 50:
             display.print(str(new_speed))        
             await rvr.drive_with_heading(new_speed,0,2)
-            await asyncio.sleep(5)
-        
+            await asyncio.sleep(4)
+    
+
+async def not_main():
+    print('Program terminated by keyboard interrupt.')
+    GPIO.cleanup()
+    await rvr.close()
 try:
     
     loop.run_until_complete(
@@ -87,10 +95,13 @@ try:
     )
     
 except KeyboardInterrupt:
-    print('Program terminated by keyboard interrupt.')
-    GPIO.cleanup()    
+    loop.run_until_complete(
+        asyncio.gather(
+            not_main()
+        )
+    )
 
-finally:
-    rvr.sensor_control.clear()
-    time.sleep(.5)
-    rvr.close()    
+#finally:
+    #rvr.sensor_control.clear()
+ #   time.sleep(.5)    
+   # rvr.close()    
