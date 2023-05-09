@@ -29,37 +29,37 @@ GPIO.setup(left_echo, GPIO.IN)
 GPIO.setup(right_trigger, GPIO.OUT)
 GPIO.setup(right_echo, GPIO.IN)
 
-#def display_speed():
- #   speed2 = random.randint(10,30)    
-  #  return speed2
+def display_speed():
+    speed2 = random.randint(10,30)    
+    return speed2
 
 async def main():
-    while True:
-        await rvr.wake()
-        await rvr.reset_yaw()
-     #   new_speed = display_speed()
-      #  display.print(str(new_speed))
+    await rvr.wake()
+    await rvr.reset_yaw()
+    await asyncio.sleep(.5)
+    while True:        
+        new_speed = display_speed()
+        display.print(str(new_speed))
         dist_r = distance_right()
         dist_l = distance_left()
-     #   await asyncio.sleep(.05)
-      #  print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
-     #   if dist_r < 35:
-      #  while dist_r < 35:
-      #  await rvr.raw_motors(2, 255, 1, 255)
-       # dist_r = distance_right()
-        #await asyncio.sleep(.05)
-        #print('turning right')
-        #await rvr.reset_yaw()
-       # elif dist_l < 35:
-      #  while dist_l < 35:
-       # await rvr.raw_motors(1, 255, 2, 255)
-        #dist_l = distance_left()
         await asyncio.sleep(.05)
-        #print('turning left')
-        await rvr.reset_yaw()
-        #elif dist_l >= 35 and dist_r >= 35:
-        await rvr.drive_with_heading(30,0,2)
-        #await asyncio.sleep(.5)
+        print('Measurements are {0} cm right and {1} cm left'.format(dist_r, dist_l))
+        if dist_r < 35:
+            while dist_r < 35:
+                await rvr.raw_motors(2, 255, 1, 255)
+                dist_r = distance_right()
+                await asyncio.sleep(.05)
+                print('turning right')
+                await rvr.reset_yaw()
+        elif dist_l < 35:
+            while dist_l < 35:
+                await rvr.raw_motors(1, 255, 2, 255)
+                dist_l = distance_left()
+                await asyncio.sleep(.05)
+                print('turning left')
+                await rvr.reset_yaw()
+        elif dist_l >= 35 and dist_r >= 35:
+            await rvr.drive_with_heading(new_speed,0,2)
         
 try:
     loop.run_until_complete(
@@ -70,8 +70,8 @@ try:
     
 except KeyboardInterrupt:
     print('Program terminated by keyboard interrupt.')
-#    GPIO.cleanup()    
+    GPIO.cleanup()    
 
-#finally:
-#     rvr.close()
+finally:
+     rvr.close()
     
