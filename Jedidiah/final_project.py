@@ -4,17 +4,18 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 from sphero_sdk import SpheroRvrAsync
 from sphero_sdk import SerialAsyncDal
+from sphero_sdk import RvrStreamingServices
 from oled_io import Oled_io
 import RPi.GPIO as GPIO
 import asyncio
 import random
 from ultrasonic_sensor import distance_left, distance_right
 from PiAnalog import *
+from PiAnalogThermistor import *
 from light_sensor import light_from_r
 from thermometer_plus import buzz
-from color_detection import *
-from dhttest import check_temp_and_humidity
-import tracemalloc
+from color_detection import color_detected_handler as c_handler
+from rgb_led import color_changed
 
 display = Oled_io()
 loop = asyncio.get_event_loop()
@@ -24,6 +25,7 @@ rvr = SpheroRvrAsync(
     )
 )
 p = PiAnalog()
+p2 = PiAnalogThermistor()
 multiplier = 2000
 
 GPIO.setmode(GPIO.BCM)
@@ -46,7 +48,12 @@ def detect_light():
     light = light_from_r(p.read_resistance())
     reading_str = "{:.0f}".format(light)
     return reading_str
-tracemalloc.start()    
+   
+def detect_temp():
+    temp = p2.read_temp_f()
+    temperature = "%.2f" % temp
+    return temp
+
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
@@ -59,7 +66,11 @@ async def main():
         print('Measurements are {0:.2f} cm right and {1:.2f} cm left'.format(dist_r, dist_l))
         light_amount = detect_light()
         print(f"The light reading is {light_amount}.")
-        check_temp_and_humidity()
+        temperature_outside = detect_temp()
+        print(f'The temperature is {temperature_outside} F.')
+        await rvr.sensor_control.add_sensor_data_handler(
+             service=RvrStreamingServices.color_detection,
+             handler=c_handler)     
         if dist_r < 50:
             buzz(2000, 0.5)
             while dist_r < 50:
@@ -80,14 +91,8 @@ async def main():
             display.print(str(new_speed))        
             await rvr.drive_with_heading(new_speed,0,2)
             await asyncio.sleep(4)
-    
-
-async def not_main():
-    print('Program terminated by keyboard interrupt.')
-    GPIO.cleanup()
-    await rvr.close()
-try:
-    
+ 
+try:    
     loop.run_until_complete(
         asyncio.gather(
             main()
@@ -95,13 +100,10 @@ try:
     )
     
 except KeyboardInterrupt:
-    loop.run_until_complete(
-        asyncio.gather(
-            not_main()
-        )
-    )
+    print('Program terminated by keyboard interrupt.')
+    GPIO.cleanup()
 
-#finally:
+finally:
     #rvr.sensor_control.clear()
- #   time.sleep(.5)    
-   # rvr.close()    
+    time.sleep(.5)    
+    rvr.close()    

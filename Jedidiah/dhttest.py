@@ -6,9 +6,8 @@ import time
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM) #Broadcom mode
 GPIO.cleanup()
-
 # read data using pin 14
-def check_temp_and_humidity():    
+def check_temp_and_humidity():
     instance = dht11.DHT11(pin = 16)
     result = instance.read()
 

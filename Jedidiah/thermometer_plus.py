@@ -4,10 +4,12 @@
 from PiAnalog import *
 #from guizero import App, Text
 from gpiozero import DigitalOutputDevice
+#from RPi import GPIO
 import time
 
 set_temp = 25
-
+#pin_out = 13
+#GPIO.setup(pin_out, GPIO.OUT)
 pin1 = DigitalOutputDevice(13)
 pin2 = DigitalOutputDevice(25)
 p = PiAnalog()

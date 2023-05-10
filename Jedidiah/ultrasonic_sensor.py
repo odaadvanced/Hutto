@@ -31,7 +31,6 @@ GPIO.setup(left_echo, GPIO.IN)
 GPIO.setup(right_trigger, GPIO.OUT)
 GPIO.setup(right_echo, GPIO.IN)
 
-
 def distance_left():
     GPIO.output(left_trigger, True)
     
