@@ -54,8 +54,9 @@ def detect_light():
    
 def detect_temp():
     temp = p2.read_temp_f()
-    temperature = "%.2f" % temp
-    return temp
+   # temperature = "%.2f" % temp
+    temperature = "{:.2f}".format(temp)
+    return temperature
 
 def detect_color():
     global other_detection_file_path
@@ -67,23 +68,21 @@ def detect_color():
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
-    await asyncio.sleep(.5)  
-    while True:        
-        global detection_file_path
-        await rvr.wake()
-
-    # Give RVR time to wake up
-        await asyncio.sleep(2)
-        with detection_file_path.open(mode = 'w', encoding = 'utf-8') as file:
-            file.write('')                                #Writes information from color_data.txt
+    await asyncio.sleep(.5)
+    global detection_file_path
+    with detection_file_path.open(mode = 'w', encoding = 'utf-8') as file:
+        file.write('')
+    while True:             
+        await rvr.wake()    # Give RVR time to wake up
+        await asyncio.sleep(2)                                        #Writes information from color_data.txt
         await rvr.enable_color_detection(is_enabled=True)
         await rvr.sensor_control.add_sensor_data_handler(
             service=RvrStreamingServices.color_detection,
             handler=color_detected_handler
         )
         await rvr.sensor_control.start(interval=250)
+        await asyncio.sleep(.05)
         color_changed(detect_color()[0], detect_color()[1], detect_color()[2])
-        await asyncio.sleep(1)
         new_speed = display_speed()
         dist_r = distance_right()
         dist_l = distance_left()

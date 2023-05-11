@@ -1,7 +1,7 @@
 # 08_light_meter.py
 # From the code for the Box 1 kit for the Raspberry Pi by MonkMakes.com
 
-from guizero import App, Text
+#from guizero import App, Text
 from PiAnalog import *
 import time, math
 
