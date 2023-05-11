@@ -14,8 +14,9 @@ from PiAnalog import *
 from PiAnalogThermistor import *
 from light_sensor import light_from_r
 from thermometer_plus import buzz
-from color_detection import color_detected_handler as c_handler
 from rgb_led import color_changed
+from pathlib import Path
+from color_detection import color_detected_handler
 
 display = Oled_io()
 loop = asyncio.get_event_loop()
@@ -27,6 +28,8 @@ rvr = SpheroRvrAsync(
 p = PiAnalog()
 p2 = PiAnalogThermistor()
 multiplier = 2000
+detection_file_path = Path.home()/'color_data.txt'
+other_detection_file_path = Path.home()/'immediate_color_data.txt'
 
 GPIO.setmode(GPIO.BCM)
 
@@ -54,11 +57,34 @@ def detect_temp():
     temperature = "%.2f" % temp
     return temp
 
+def detect_color():
+    global other_detection_file_path
+    with open(other_detection_file_path, mode= 'r', encoding = 'utf-8') as file:
+        text = file.read()        
+        list_text = text.split(", ")
+    return list_text
+            
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)  
     while True:        
+        global detection_file_path
+        await rvr.wake()
+
+    # Give RVR time to wake up
+        await asyncio.sleep(2)
+        with detection_file_path.open(mode = 'w', encoding = 'utf-8') as file:
+            file.write('')
+        await rvr.enable_color_detection(is_enabled=True)
+        await rvr.sensor_control.add_sensor_data_handler(
+            service=RvrStreamingServices.color_detection,
+            handler=color_detected_handler
+        )
+        await rvr.sensor_control.start(interval=250)
+
+        await asyncio.sleep(1)
+        color_changed(detect_color()[0], detect_color()[1], detect_color()[2])
         new_speed = display_speed()
         dist_r = distance_right()
         dist_l = distance_left()
@@ -68,9 +94,6 @@ async def main():
         print(f"The light reading is {light_amount}.")
         temperature_outside = detect_temp()
         print(f'The temperature is {temperature_outside} F.')
-        await rvr.sensor_control.add_sensor_data_handler(
-             service=RvrStreamingServices.color_detection,
-             handler=c_handler)     
         if dist_r < 50:
             buzz(2000, 0.5)
             while dist_r < 50:
@@ -93,6 +116,10 @@ async def main():
             await asyncio.sleep(4)
  
 try:    
+#     asyncio.ensure_future(
+#         main()
+#     )
+#     loop.run_forever()
     loop.run_until_complete(
         asyncio.gather(
             main()

@@ -25,7 +25,7 @@ async def color_detected_handler(color_detected_data):
     color_data_blue = (color_detected_data['ColorDetection']['B'])
     return(color_data_red, color_data_green, color_data_blue)
     
-async def main():
+async def color_main():
     """ This program demonstrates how to use the color sensor on RVR (located on the down side of RVR, facing the floor)
         to report colors detected. To exit program, press <CTRL-C>
     """
@@ -52,11 +52,11 @@ async def test_function():
     result = color_detected_handler(color_detected_data)
     print(result)
 
-if __name__ == '__main__':
+if __name__ == '__color_detected_main__':
     try:
         
         asyncio.ensure_future(
-            main()
+            color_main()
         )
         loop.run_forever()
         print(color_detected_data)
