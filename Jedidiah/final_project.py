@@ -83,6 +83,7 @@ async def main():
         await rvr.sensor_control.start(interval=250)
         await asyncio.sleep(.05)
         color_changed(detect_color()[0], detect_color()[1], detect_color()[2])
+        await asyncio.sleep(2)
         new_speed = display_speed()
         dist_r = distance_right()
         dist_l = distance_left()
@@ -111,7 +112,7 @@ async def main():
         elif dist_l >= 50 and dist_r >= 50:
             display.print(str(new_speed))        
             await rvr.drive_with_heading(new_speed,0,2)
-            await asyncio.sleep(2)
+            await asyncio.sleep(.05)
  
 try:
     loop.run_until_complete(
