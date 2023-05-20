@@ -105,6 +105,7 @@ async def main():
             buzz(2000, 0.5)
             while dist_r < 50:
                 await rvr.raw_motors(2, 255, 1, 255)
+                await rvr.reset_yaw()
                 dist_r = distance_right()
                 await asyncio.sleep(.05)
                 print('turning right')
@@ -113,6 +114,7 @@ async def main():
             buzz(2000, 0.5)
             while dist_l < 50:
                 await rvr.raw_motors(1, 255, 2, 255)
+                await rvr.reset_yaw()
                 dist_l = distance_left()
                 await asyncio.sleep(.05)
                 print('turning left')
@@ -140,6 +142,7 @@ async def main():
             else:
                 await rvr.drive_with_heading(new_speed,0,2)
                 await asyncio.sleep(1.95)
+    await rvr.close()
  
 try:
     loop.run_until_complete(
