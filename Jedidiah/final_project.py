@@ -5,6 +5,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.
 from sphero_sdk import SpheroRvrAsync
 from sphero_sdk import SerialAsyncDal
 from sphero_sdk import RvrStreamingServices
+from sphero_sdk import RvrLedGroups
+from sphero_sdk import Colors
 from oled_io import Oled_io
 import RPi.GPIO as GPIO
 import asyncio
@@ -44,7 +46,9 @@ GPIO.setup(right_trigger, GPIO.OUT)
 GPIO.setup(right_echo, GPIO.IN)
 
 def display_speed():
-    speed2 = random.randint(10,30)    #Speed of rover is number between 10 and 30 (possible range is 0-255).
+    slow_speed = random.randint(10, 16)
+    fast_speed = random.randint(24, 30)
+    speed2 = random.choice([slow_speed, fast_speed])    
     return speed2
 
 def detect_light():
@@ -69,12 +73,16 @@ async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)
+    await rvr.set_all_leds(
+        led_group=RvrLedGroups.all_lights.value,
+        led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
+    )
     global detection_file_path
     with detection_file_path.open(mode = 'w', encoding = 'utf-8') as file:
         file.write('')
     while True:             
         await rvr.wake()    # Give RVR time to wake up
-        await asyncio.sleep(2)                                        #Writes information from color_data.txt
+        await asyncio.sleep(.05)                                        #Writes information from color_data.txt
         await rvr.enable_color_detection(is_enabled=True)
         await rvr.sensor_control.add_sensor_data_handler(
             service=RvrStreamingServices.color_detection,
@@ -110,9 +118,28 @@ async def main():
                 print('turning left')
                 await rvr.reset_yaw()
         elif dist_l >= 50 and dist_r >= 50:
-            display.print(str(new_speed))        
-            await rvr.drive_with_heading(new_speed,0,2)
-            await asyncio.sleep(.05)
+            display.print(str(new_speed))
+            if new_speed >= 24:                
+                await rvr.drive_with_heading(new_speed,0,2)                
+                for time in range(6):
+                    await rvr.set_all_leds(
+                        led_group=RvrLedGroups.all_lights.value,
+                        led_brightness_values=[color for x in range(10) for color in [255, 0, 0]]
+                    )
+                    await asyncio.sleep(0.1)
+                    await rvr.set_all_leds(
+                        led_group=RvrLedGroups.all_lights.value,
+                        led_brightness_values=[color for x in range(10) for color in [255, 255, 255]]
+                    )
+                    await asyncio.sleep(0.1)
+                    await rvr.set_all_leds(
+                        led_group=RvrLedGroups.all_lights.value,
+                        led_brightness_values=[color for x in range(10) for color in [0, 0, 255]]
+                    )
+                    await asyncio.sleep(0.1)                
+            else:
+                await rvr.drive_with_heading(new_speed,0,2)
+                await asyncio.sleep(1.95)
  
 try:
     loop.run_until_complete(
