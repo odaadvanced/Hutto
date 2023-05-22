@@ -30,8 +30,10 @@ rvr = SpheroRvrAsync(
 p = PiAnalog()
 p2 = PiAnalogThermistor()
 multiplier = 2000                     #Used for phototransistor: increase to make detections more sensitive
-detection_file_path = Path.home()/'color_data.txt'
-other_detection_file_path = Path.home()/'immediate_color_data.txt'
+detection_file_path = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
+detection_file_path.touch()
+other_detection_file_path = Path.home()/'dev'/'hutto'/'Jedidiah'/'immediate_color_data.txt'
+other_detection_file_path.touch()
 
 GPIO.setmode(GPIO.BCM)              #Broadcom mode
 
@@ -58,7 +60,6 @@ def detect_light():
    
 def detect_temp():
     temp = p2.read_temp_f()
-   # temperature = "%.2f" % temp
     temperature = "{:.2f}".format(temp)
     return temperature
 
@@ -123,7 +124,7 @@ async def main():
             display.print(str(new_speed))
             if new_speed >= 24:                
                 await rvr.drive_with_heading(new_speed,0,2)                
-                for time in range(6):
+                for time in range(7):
                     await rvr.set_all_leds(
                         led_group=RvrLedGroups.all_lights.value,
                         led_brightness_values=[color for x in range(10) for color in [255, 0, 0]]
