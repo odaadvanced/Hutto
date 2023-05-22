@@ -30,10 +30,10 @@ rvr = SpheroRvrAsync(
 p = PiAnalog()
 p2 = PiAnalogThermistor()
 multiplier = 2000                     #Used for phototransistor: increase to make detections more sensitive
-detection_file_path = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
-detection_file_path.touch()
-other_detection_file_path = Path.home()/'dev'/'hutto'/'Jedidiah'/'immediate_color_data.txt'
-other_detection_file_path.touch()
+color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
+color_data.touch()
+immediate_color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'immediate_color_data.txt'
+immediate_color_data.touch()
 
 GPIO.setmode(GPIO.BCM)              #Broadcom mode
 
@@ -64,8 +64,8 @@ def detect_temp():
     return temperature
 
 def detect_color():
-    global other_detection_file_path
-    with open(other_detection_file_path, mode= 'r', encoding = 'utf-8') as file:
+    global immediate_color_data
+    with open(immediate_color_data, mode= 'r', encoding = 'utf-8') as file:
         text = file.read()            #Reads information about color detection from immediate_color_data.txt
         list_text = text.split(", ")
     return list_text
@@ -78,8 +78,8 @@ async def main():
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
     )
-    global detection_file_path
-    with detection_file_path.open(mode = 'w', encoding = 'utf-8') as file:
+    global color_data
+    with color_data.open(mode = 'w', encoding = 'utf-8') as file:
         file.write('')
     while True:             
         await rvr.wake()    # Give RVR time to wake up
