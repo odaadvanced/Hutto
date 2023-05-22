@@ -19,10 +19,9 @@ from thermometer_plus import buzz
 from rgb_led import color_changed
 from pathlib import Path
 from color_detection import color_detected_handler
-from tts import TTS
+from gtts import gTTS
+from playsound import playsound
 
-tts = TTS(engine="espeak")
-tts.lang('en-US')
 display = Oled_io()
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
@@ -76,23 +75,29 @@ def detect_color():
 
 def say_the_poem():
     global beginning_poem
-    global tts
+    global gTTS
     with open(beginning_poem, mode = 'r', encoding = 'utf-8') as file:
         text = file.read()
-        tts.say(text) 
+        tts = gTTS(text)
+    tts.save('beginning_project.mp3')
+    sound = Path.home()/'dev'/'hutto'/'Jedidiah'/'beginning_project.mp3'
+    return sound
 
 def end_the_poem():
     global ending_poem
-    global tts
+    global gTTS
     with open(ending_poem, mode = 'r', encoding = 'utf-8') as file:
         text = file.read()
-        tts.say(text)
+        tts = gTTS(text)
+    tts.save('ending_project.mp3')
+    sound = Path.home()/'dev'/'hutto'/'Jedidiah'/'ending_project.mp3'
+    return sound
 
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)
-    say_the_poem()
+    playsound(say_the_poem())
     await rvr.set_all_leds(
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
@@ -173,7 +178,7 @@ try:
     
 except KeyboardInterrupt:
     print('Program terminated by keyboard interrupt.')
-    end_the_poem()
+    playsound(end_the_poem())
     GPIO.cleanup()
 
 finally:    
