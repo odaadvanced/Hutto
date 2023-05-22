@@ -19,7 +19,10 @@ from thermometer_plus import buzz
 from rgb_led import color_changed
 from pathlib import Path
 from color_detection import color_detected_handler
+from tts import TTS
 
+tts = TTS(engine="espeak")
+tts.lang('en-US')
 display = Oled_io()
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
@@ -34,7 +37,8 @@ color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
 color_data.touch()
 immediate_color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'immediate_color_data.txt'
 immediate_color_data.touch()
-
+beginning_poem = Path.cwd()/'the_first_poem.txt'
+ending_poem = Path.cwd()/'the_second_poem.txt'
 GPIO.setmode(GPIO.BCM)              #Broadcom mode
 
 right_trigger = 20     #Setting up GPIO pins for the ultrasonic sensors.
@@ -69,11 +73,26 @@ def detect_color():
         text = file.read()            #Reads information about color detection from immediate_color_data.txt
         list_text = text.split(", ")
     return list_text
-            
+
+def say_the_poem():
+    global beginning_poem
+    global tts
+    with open(beginning_poem, mode = 'r', encoding = 'utf-8') as file:
+        text = file.read()
+        tts.say(text) 
+
+def end_the_poem():
+    global ending_poem
+    global tts
+    with open(ending_poem, mode = 'r', encoding = 'utf-8') as file:
+        text = file.read()
+        tts.say(text)
+
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)
+    say_the_poem()
     await rvr.set_all_leds(
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
@@ -154,6 +173,7 @@ try:
     
 except KeyboardInterrupt:
     print('Program terminated by keyboard interrupt.')
+    end_the_poem()
     GPIO.cleanup()
 
 finally:    
