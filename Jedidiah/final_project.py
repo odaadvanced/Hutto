@@ -135,6 +135,7 @@ async def main():
         print(f'The temperature is {temperature_outside} F.')
         if dist_r < 50:
             buzz(2000, 0.5)
+            picture_number += 1
             while dist_r < 50:
                 await rvr.raw_motors(2, 150, 1, 150)
                 dist_r = distance_right()
@@ -143,6 +144,7 @@ async def main():
                 await rvr.reset_yaw()
         elif dist_l < 50:
             buzz(2000, 0.5)
+            picture_number += 1
             while dist_l < 50:
                 await rvr.raw_motors(1, 150, 2, 150)
                 dist_l = distance_left()
@@ -152,7 +154,6 @@ async def main():
         elif dist_l >= 50 and dist_r >= 50:
             display.print(str(new_speed))
             display_camera.capture('/home/pi/dev/hutto/Jedidiah/photos_directory/my_photo%s.jpg' % picture_number)
-            picture_number += 1
             if new_speed >= 24:                
                 await rvr.drive_with_heading(new_speed,0,2)                
                 for blink in range(7):
