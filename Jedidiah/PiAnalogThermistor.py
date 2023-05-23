@@ -60,7 +60,7 @@ class PiAnalogThermistor:
         r = (RC / self.C) - self.R1
         return r
         
-    def read_temp_c(self, B=470000.0, R0=1000.0):
+    def read_temp_c(self, B=130800.0, R0=1000.0):
         R = self.read_resistance()
         t0 = 273.15     # 0 deg C in K
         t25 = t0 + 25.0 # 25 deg C in K
@@ -69,7 +69,7 @@ class PiAnalogThermistor:
         T = (1/inv_T - t0)
         return T
         
-    def read_temp_f(self, B=470000.0, R0=1000.0):
+    def read_temp_f(self, B=130800.0, R0=1000.0):
         return self.read_temp_c(B, R0) * 9 / 5 + 32
         
     

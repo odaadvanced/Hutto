@@ -1,8 +1,14 @@
 from gtts import gTTS
-import os
 
-myText = '''We have just landed on Mars. This place is cold and bizarre.
+myText = '''We have just landed on Mars. This place is strange and bizarre.
 We are searching for signs of life. Can one stand here alive?
+To those who think Mars red. To those who think its dead.
+To those who think it melts by day, And freezes when night holds sway.
+To those who think its rocky. To those who think its chalky.
+To thse who think the skies above, Are as pink as you can think of.
+I, educated Martian rover, Shall defeat those myths that hover.
+You are terribly mistaken. You've been fooled all your life and shaken.
+Mars is honestly quite queer. I'll educate you, never fear.
 The temperature here is mild. The number of obstacles- wild.
 This place is surprisingly bright. Its rather flooded with light.
 The ground beneath is rather gray, The horizons blue one way.
@@ -17,7 +23,9 @@ This place is dreary and bleak. I hear my tires squeak.
 But other than that. Theres no sound on this flat.
 I quietly creep like a cat. But wait! What noise was that?
 Perhaps some squeaking of shoes? Oh, danger overhead brews!
-Does Mars hold aliens? Or worse yet- dreadful humans?'''
+Does Mars hold aliens? Or worse yet- dreadful humans?
+I shall haste to finish my job. And then fly from this creepy mob.
+For now, I better be silent. Humans are eavesdropping agents.'''
 
 language = 'en'
 

@@ -1,5 +1,4 @@
 from gtts import gTTS
-import os
 
 myText = '''And now to home I shall fly.
 To this very red planet- goodbye.
