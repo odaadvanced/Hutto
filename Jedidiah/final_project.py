@@ -20,20 +20,22 @@ from rgb_led import color_changed
 from pathlib import Path
 from color_detection import color_detected_handler
 from picamera import PiCamera
-from camera import setup
 # from gtts import gTTS
 # from playsound import playsound
 
 display = Oled_io()
-camera = PiCamera()
 loop = asyncio.get_event_loop()
 rvr = SpheroRvrAsync(
     dal=SerialAsyncDal(
         loop
     )
 )
+display_camera = PiCamera()
+directory_path = Path.home()/'dev/hutto/Jedidiah/photos_directory'
+directory_path.mkdir(exist_ok = True)
 p = PiAnalog()
 p2 = PiAnalogThermistor()
+picture_number = 0
 multiplier = 2000                     #Used for phototransistor: increase to make detections more sensitive
 color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
 color_data.touch()
@@ -100,17 +102,17 @@ async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)
-    setup()
+    display_camera.start_preview(alpha=200)
    # playsound(say_the_poem())
     await rvr.set_all_leds(
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
     )
     global color_data
+    global picture_number
     with color_data.open(mode = 'w', encoding = 'utf-8') as file:
         file.write('')
     while True:
-        for 
         await rvr.wake()    # Give RVR time to wake up
         await asyncio.sleep(.05)                                        #Writes information from color_data.txt
         await rvr.enable_color_detection(is_enabled=True)
@@ -134,7 +136,7 @@ async def main():
         if dist_r < 50:
             buzz(2000, 0.5)
             while dist_r < 50:
-                await rvr.raw_motors(2, 255, 1, 255)
+                await rvr.raw_motors(2, 150, 1, 150)
                 dist_r = distance_right()
                 await asyncio.sleep(.05)
                 print('turning right')
@@ -142,16 +144,18 @@ async def main():
         elif dist_l < 50:
             buzz(2000, 0.5)
             while dist_l < 50:
-                await rvr.raw_motors(1, 255, 2, 255)
+                await rvr.raw_motors(1, 150, 2, 150)
                 dist_l = distance_left()
                 await asyncio.sleep(.05)
                 print('turning left')
                 await rvr.reset_yaw()
         elif dist_l >= 50 and dist_r >= 50:
             display.print(str(new_speed))
+            display_camera.capture('/home/pi/dev/hutto/Jedidiah/photos_directory/my_photo%s.jpg' % picture_number)
+            picture_number += 1
             if new_speed >= 24:                
                 await rvr.drive_with_heading(new_speed,0,2)                
-                for time in range(7):
+                for blink in range(7):
                     await rvr.set_all_leds(
                         led_group=RvrLedGroups.all_lights.value,
                         led_brightness_values=[color for x in range(10) for color in [255, 0, 0]]
@@ -181,6 +185,8 @@ try:
     
 except KeyboardInterrupt:
     print('Program terminated by keyboard interrupt.')
+    display_camera.stop_preview()
+    display_camera.close()
     #playsound(end_the_poem())
     GPIO.cleanup()
 
