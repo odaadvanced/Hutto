@@ -20,8 +20,7 @@ from rgb_led import color_changed
 from pathlib import Path
 from color_detection import color_detected_handler
 from picamera import PiCamera
-# from gtts import gTTS
-# from playsound import playsound
+import subprocess
 
 display = Oled_io()
 loop = asyncio.get_event_loop()
@@ -31,18 +30,21 @@ rvr = SpheroRvrAsync(
     )
 )
 display_camera = PiCamera()
-directory_path = Path.home()/'dev/hutto/Jedidiah/photos_directory'
+directory_location = '/home/pi/dev/hutto/Jedidiah/photos_directory'
+directory_path = Path(directory_location)
 directory_path.mkdir(exist_ok = True)
+for file in os.scandir(directory_location):
+    os.remove(file.path)
 p = PiAnalog()
 p2 = PiAnalogThermistor()
 picture_number = 0
+sound_file = '/home/pi/dev/hutto/Jedidiah/output.mp3'
+shourt_sound_file = '/home/pi/dev/hutto/Jedidiah/short_poem.mp3'
 multiplier = 2000                     #Used for phototransistor: increase to make detections more sensitive
 color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'color_data.txt'
 color_data.touch()
 immediate_color_data = Path.home()/'dev'/'hutto'/'Jedidiah'/'immediate_color_data.txt'
 immediate_color_data.touch()
-# beginning_poem = Path.cwd()/'the_first_poem.txt'
-# ending_poem = Path.cwd()/'the_second_poem.txt'
 GPIO.setmode(GPIO.BCM)              #Broadcom mode
 
 right_trigger = 20     #Setting up GPIO pins for the ultrasonic sensors.
@@ -78,40 +80,21 @@ def detect_color():
         list_text = text.split(", ")
     return list_text
 
-# def say_the_poem():
-#     global beginning_poem
-#     global gTTS
-#     with open(beginning_poem, mode = 'r', encoding = 'utf-8') as file:
-#         text = file.read()
-#         tts = gTTS(text)
-#     tts.save('beginning_project.mp3')
-#     sound = Path.home()/'dev'/'hutto'/'Jedidiah'/'beginning_project.mp3'
-#     return sound
-# 
-# def end_the_poem():
-#     global ending_poem
-#     global gTTS
-#     with open(ending_poem, mode = 'r', encoding = 'utf-8') as file:
-#         text = file.read()
-#         tts = gTTS(text)
-#     tts.save('ending_project.mp3')
-#     sound = Path.home()/'dev'/'hutto'/'Jedidiah'/'ending_project.mp3'
-#     return sound
-
 async def main():
     await rvr.wake()
     await rvr.reset_yaw()
     await asyncio.sleep(.5)
     display_camera.start_preview(alpha=200)
-   # playsound(say_the_poem())
     await rvr.set_all_leds(
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in Colors.off.value]
     )
     global color_data
     global picture_number
+    global sound_file
     with color_data.open(mode = 'w', encoding = 'utf-8') as file:
         file.write('')
+    subprocess.call(['xdg-open', sound_file])
     while True:
         await rvr.wake()    # Give RVR time to wake up
         await asyncio.sleep(.05)                                        #Writes information from color_data.txt
@@ -186,9 +169,9 @@ try:
     
 except KeyboardInterrupt:
     print('Program terminated by keyboard interrupt.')
+    subprocess.call(['xdg-open', short_sound_file])
     display_camera.stop_preview()
     display_camera.close()
-    #playsound(end_the_poem())
     GPIO.cleanup()
 
 finally:    
